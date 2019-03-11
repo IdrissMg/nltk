@@ -32,7 +32,7 @@ X - other: foreign words, typos, abbreviations
 from __future__ import print_function, unicode_literals, division
 from collections import defaultdict
 from os.path import join
-
+import pickle
 from nltk.data import load
 
 _UNIVERSAL_DATA = "taggers/universal_tagset"
@@ -55,6 +55,9 @@ _UNIVERSAL_TAGS = (
 # the mapping between tagset T1 and T2 returns UNK if appied to an unrecognized tag
 _MAPPINGS = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 'UNK')))
 
+def load_obj(name):
+    with open(name + '.pkl', 'rb') as f:
+        return pickle.load(f)
 
 def _load_universal_map(fileid):
     contents = load(join(_UNIVERSAL_DATA, fileid + '.map'), format="text")
@@ -89,7 +92,7 @@ def tagset_mapping(source, target):
 
     if source not in _MAPPINGS or target not in _MAPPINGS[source]:
         if target == 'universal':
-            _load_universal_map(source)
+            # _load_universal_map(source)
             # Added the new Russian National Corpus mappings because the
             # Russian model for nltk.pos_tag() uses it.
             _MAPPINGS['ru-rnc-new']['universal'] = {
@@ -111,6 +114,7 @@ def tagset_mapping(source, target):
                 'S-PRO': 'PRON',
                 'V': 'VERB',
             }
+            _MAPPINGS['fr_cust']['universal'] = load_obj('simplified_tag')
 
     return _MAPPINGS[source][target]
 
