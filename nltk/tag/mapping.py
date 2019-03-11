@@ -54,9 +54,10 @@ _UNIVERSAL_TAGS = (
 # _MAPPINGS = defaultdict(lambda: defaultdict(dict))
 # the mapping between tagset T1 and T2 returns UNK if appied to an unrecognized tag
 _MAPPINGS = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: 'UNK')))
+PATH = "C:/Users/Idriss/Documents/GitHub/nltk/nltk/tag/"
 
 def load_obj(name):
-    with open(name + '.pkl', 'rb') as f:
+    with open(PATH+name + '.pkl', 'rb') as f:
         return pickle.load(f)
 
 def _load_universal_map(fileid):
